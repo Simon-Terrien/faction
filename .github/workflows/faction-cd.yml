@@ -35,11 +35,14 @@ jobs:
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
-        git config advice.addIgnoredFile false
-    - name: Commit WAR file
+    
+    - name: Force add WAR file
+      run: git add -f ./target/*.war
+    
+    - name: Commit and Push WAR file
       run: |
-        git add ./target/*.war
-        git commit -m "Add WAR file - $(date)"
+        git commit -m "Deploying WAR file - $(date)"
+        git push
     
     - name: Push changes
       uses: ad-m/github-push-action@master
