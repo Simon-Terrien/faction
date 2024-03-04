@@ -35,7 +35,7 @@ jobs:
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
-    
+        git config advice.addIgnoredFile false
     - name: Commit WAR file
       run: |
         git add ./target/*.war
