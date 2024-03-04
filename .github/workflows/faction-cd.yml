@@ -12,6 +12,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
+        ref: ${{ github.event.repository.default_branch }}
         fetch-depth: 0
     - name: Cache Maven packages
       uses: actions/cache@v2
@@ -33,9 +34,13 @@ jobs:
     
     - name: Configure Git
       run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-    
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git remote rm origin
+          git remote add origin git@github.com:${{ github.repository }}.git
+    - uses: webfactory/ssh-agent@v0.9.0
+      with:
+          ssh-private-key: ${{ secrets.RELEASE_IT_SSH_PRIVATE_KEY }}
     - name: Force add WAR file
       run: git add -f ./target/*.war
     
